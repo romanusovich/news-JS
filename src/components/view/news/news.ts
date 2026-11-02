@@ -1,5 +1,5 @@
 import { NewsData } from '../../types';
-// @ts-ignore CSS is handled by the bundler.
+// @ts-expect-error CSS is handled by the bundler.
 import './news.css';
 
 class News {
@@ -17,7 +17,8 @@ class News {
             (newsClone.querySelector('.news__meta-photo') as HTMLElement).style.backgroundImage = `url(${
                 item.urlToImage || 'img/news_placeholder.jpg'
             })`;
-            (newsClone.querySelector('.news__meta-author') as HTMLElement).textContent = item.author || item.source.name;
+            (newsClone.querySelector('.news__meta-author') as HTMLElement).textContent =
+                item.author || item.source.name;
             (newsClone.querySelector('.news__meta-date') as HTMLElement).textContent = item.publishedAt
                 .slice(0, 10)
                 .split('-')

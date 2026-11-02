@@ -1,5 +1,5 @@
 import { NewsSource } from '../../types';
-// @ts-ignore CSS is handled by the bundler.
+// @ts-expect-error CSS is handled by the bundler.
 import './sources.css';
 
 class Sources {

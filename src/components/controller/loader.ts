@@ -1,4 +1,4 @@
-import {NewsSourceCallback, NewsDataCallback} from '../types';
+import { NewsSourceCallback, NewsDataCallback } from '../types';
 
 class Loader {
     private baseLink: string;
@@ -39,7 +39,12 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    public load(method: string, endpoint: string, callback: NewsSourceCallback | NewsDataCallback, options: Record<string, string> = {}): void {
+    public load(
+        method: string,
+        endpoint: string,
+        callback: NewsSourceCallback | NewsDataCallback,
+        options: Record<string, string> = {}
+    ): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json())
