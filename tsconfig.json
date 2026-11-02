@@ -5,6 +5,7 @@
     "moduleResolution": "bundler", 
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "allowJs": true,
+    "noImplicitAny": true,
     "strict": true,
     "isolatedModules": true,
     "esModuleInterop": true,
