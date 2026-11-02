@@ -1,4 +1,4 @@
-import { NewsData, NewsSource, NewsSourceCb, NewsDataCb } from '../types';
+import { NewsData, NewsSourceCb, NewsDataCb } from '../types';
 import News from './news/news';
 import Sources from './sources/sources';
 
