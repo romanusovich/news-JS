@@ -1,11 +1,11 @@
-import { NewsSourceCallback, NewsDataCallback } from '../types';
+import { Endpoint, NewsSourceCallback, NewsDataCallback, NewsSourceCb, NewsDataCb } from '../types';
 import AppLoader from './appLoader';
 
 class AppController extends AppLoader {
     public getSources(callback: NewsSourceCallback): void {
-        super.getResp(
+        super.getResp<NewsSourceCb>(
             {
-                endpoint: 'sources',
+                endpoint: Endpoint.Sources,
             },
             callback
         );
@@ -20,9 +20,9 @@ class AppController extends AppLoader {
                 const sourceId: string = target.getAttribute('data-source-id') as string;
                 if (newsContainer.getAttribute('data-source') !== sourceId) {
                     newsContainer.setAttribute('data-source', sourceId);
-                    super.getResp(
+                    super.getResp<NewsDataCb>(
                         {
-                            endpoint: 'everything',
+                            endpoint: Endpoint.Everything,
                             options: {
                                 sources: sourceId,
                             },

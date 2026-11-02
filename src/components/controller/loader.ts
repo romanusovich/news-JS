@@ -1,21 +1,21 @@
-import { NewsSourceCallback, NewsDataCallback } from '../types';
+import { Callback, Endpoint, HttpMethod, LoaderOptions, RequestParams } from '../types';
 
 class Loader {
     private baseLink: string;
-    private options: Record<string, string>;
+    private options: LoaderOptions;
 
-    constructor(baseLink: string, options: Record<string, string>) {
+    constructor(baseLink: string, options: LoaderOptions) {
         this.baseLink = baseLink;
         this.options = options;
     }
 
-    public getResp(
-        { endpoint, options = {} }: { endpoint: string; options?: Record<string, string> },
-        callback: NewsSourceCallback | NewsDataCallback = () => {
+    public getResp<T>(
+        { endpoint, options = {} }: RequestParams,
+        callback: Callback<T> = (): void => {
             console.error('No callback for GET response');
         }
     ): void {
-        this.load('GET', endpoint, callback, options);
+        this.load<T>(HttpMethod.Get, endpoint, callback, options);
     }
 
     public errorHandler(res: Response): Response {
@@ -28,9 +28,9 @@ class Loader {
         return res;
     }
 
-    public makeUrl(options: Record<string, string>, endpoint: string): string {
-        const urlOptions: Record<string, string> = { ...this.options, ...options };
-        let url = `${this.baseLink}${endpoint}?`;
+    public makeUrl(options: LoaderOptions, endpoint: Endpoint): string {
+        const urlOptions: LoaderOptions = { ...this.options, ...options };
+        let url: string = `${this.baseLink}${endpoint}?`;
 
         Object.keys(urlOptions).forEach((key: string) => {
             url += `${key}=${urlOptions[key]}&`;
@@ -39,17 +39,17 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    public load(
-        method: string,
-        endpoint: string,
-        callback: NewsSourceCallback | NewsDataCallback,
-        options: Record<string, string> = {}
+    public load<T>(
+        method: HttpMethod, 
+        endpoint: Endpoint, 
+        callback: Callback<T>, 
+        options: LoaderOptions = {}
     ): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
-            .then((res) => res.json())
-            .then((data) => callback(data))
-            .catch((err) => console.error(err));
+            .then((res: Response): Promise<T> => res.json())
+            .then((data: T): void => callback(data))
+            .catch((err: unknown): void => console.error(err));
     }
 }
 
