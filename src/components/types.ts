@@ -19,16 +19,35 @@ export interface NewsData {
     urlToImage: string;
 }
 
-export interface NewsSourceCb {
-    sources: NewsSource[];
+export enum Endpoint {
+    Sources = 'sources',
+    Everything = 'everything',
+}
+
+export enum HttpMethod {
+    Get = 'GET',
+}
+
+export type LoaderOptions = Record<string, string>;
+
+export interface RequestParams {
+    endpoint: Endpoint;
+    options?: LoaderOptions;
+}
+
+export interface ApiResponse {
     status: string;
 }
 
-export interface NewsDataCb {
+export interface NewsSourceCb extends ApiResponse {
+    sources: NewsSource[];
+}
+
+export interface NewsDataCb extends ApiResponse {
     articles: NewsData[];
-    status: string;
     totalResults: number;
 }
 
-export type NewsSourceCallback = (data: NewsSourceCb) => void;
-export type NewsDataCallback = (data: NewsDataCb) => void;
+export type Callback<T> = (data: T) => void;
+export type NewsSourceCallback = Callback<NewsSourceCb>;
+export type NewsDataCallback = Callback<NewsDataCb>;
